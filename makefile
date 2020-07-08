@@ -10,9 +10,8 @@ NAME = gbhdate
 
 ########## EDIT ABOVE HERE ##########
 
-OBJDIR = obj
 LIB = lib$(NAME).a
-OBJECTS = $(OBJDIR)/$(NAME).o
+OBJECTS = $(NAME).o
 
 
 all: $(LIB)
@@ -20,7 +19,7 @@ all: $(LIB)
 $(LIB): $(OBJECTS)
 	ar -vr $@ $(OBJECTS)
 
-$(OBJDIR)/%.o: %.cpp
+%.o: %.cpp
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 .PHONY: clean
