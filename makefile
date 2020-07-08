@@ -1,16 +1,8 @@
 # G BRENT HURST
 # Makefile for gbhdate
 
-
-
-OBJDIR = obj
-SRCDIR = src
-HEADERDIR = .
-LIBDIR = .
-
 CC = g++
-LANGUAGE = cpp
-CFLAGS = -Wall -Wextra -I$(LIBDIR)
+CFLAGS = -Wall -Wextra
 
 ########## EDIT BELOW HERE ##########
 
@@ -18,27 +10,19 @@ NAME = gbhdate
 
 ########## EDIT ABOVE HERE ##########
 
-LIBFILENAME = $(LIBDIR)/lib$(NAME).a
-HEADERS = $(HEADERDIR)/$(NAME).h
-OBJECTS = $(patsubst $(SRCDIR)/%.$(LANGUAGE),$(OBJDIR)/%.o,$(wildcard $(SRCDIR)/*.$(LANGUAGE)))
+OBJDIR = obj
+LIB = lib$(NAME).a
+OBJECTS = $(OBJDIR)/$(NAME).o
 
 
-all: $(LIBFILENAME)
+all: $(LIB)
 
-$(LIBFILENAME): $(OBJECTS)
-	ar -vr $(LIBFILENAME) $(OBJECTS)
+$(LIB): $(OBJECTS)
+	ar -vr $@ $(OBJECTS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.$(LANGUAGE) $(HEADERS) | $(OBJDIR)
+$(OBJDIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
 
 .PHONY: clean
 clean:
-	rm -f $(OBJECTS)
-
-.PHONY: cleanall
-cleanall:
-	rm -f $(OBJECTS) $(LIBFILENAME)
+	rm -f $(OBJECTS) $(LIB)

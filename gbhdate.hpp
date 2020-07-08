@@ -18,14 +18,14 @@
  *
  ************************************************/
 
-#ifndef DATE_H
-#define DATE_H
+#ifndef GBHDATE_H
+#define GBHDATE_H
 
 #include <string>
 using namespace std;
 
 
-class Date
+class GBH_Date
 {
   protected:
 	int year;
@@ -36,55 +36,52 @@ class Date
 
 	int totalDay; //since an undefined epoch
 
-	//setProtected.cpp
 	void setYear(int y);
 	void setMonth(int m);
 	void setDay(int d);
 	void setTotalDay();
-	void setWithTotalDay(int i);
 
   public:
-	//ConstrDestr.cpp
-	Date(int y,int m,int d);
-	Date(string date);
-	Date();
+	GBH_Date(int y,int m,int d);
+	GBH_Date(string date);
+	GBH_Date();
 
-	//operators.cpp
-	Date operator+(const int days);
-	Date operator-(const int days);
-	Date operator++();
-	Date operator--();
-	Date operator+=(const int days);
-	Date operator-=(const int days);
-	Date operator=(const Date& d);
-	int operator-(const Date& d);
-	bool operator<(const Date& d);
-	bool operator>(const Date& d);
-	bool operator<=(const Date& d);
-	bool operator>=(const Date& d);
-	bool operator==(const Date& d);
-	bool operator!=(const Date& d);
+	GBH_Date operator+(const int days);
+	GBH_Date operator-(const int days);
+	GBH_Date operator++();
+	GBH_Date operator--();
+	GBH_Date operator+=(const int days);
+	GBH_Date operator-=(const int days);
+	GBH_Date operator=(const GBH_Date& d);
+	int operator-(const GBH_Date& d);
+	bool operator<(const GBH_Date& d);
+	bool operator>(const GBH_Date& d);
+	bool operator<=(const GBH_Date& d);
+	bool operator>=(const GBH_Date& d);
+	bool operator==(const GBH_Date& d);
+	bool operator!=(const GBH_Date& d);
 
-	//print.cpp
 	//pretty much just for error checking
 	void print() const;
 
-	//read.cpp
 	void ReadInDate();
 
-	//setPublic.cpp
 	bool setDate(int y, int m, int d);
 	bool setDate(string date);
-	bool setDate(const Date& D);
+	bool setDate(unsigned int date);
+	bool setDate(const GBH_Date& D);
 
-	//get.cpp
 	int getYear() const;
 	int getMonth() const;
 	string getMonthName() const;
 	string getMonthAbr() const;
 	int getDay() const;
-	//default format: "yyyymmdd"
-	string getDate() const;
+	//format: "yyyymmdd"
+	string getDateStr() const;
+	unsigned int getDateInt() const;
+
+	int getTotalDay();
+	void setWithTotalDay(int i);
 };
 
 #endif
