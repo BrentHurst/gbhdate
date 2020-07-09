@@ -1,8 +1,9 @@
 /*************************************************
  *   G BRENT HURST
- *   gbhdate.h
- *   May 9, 2017 (original)
- *   August 12, 2019 (last edit)
+ *   gbhdate.hpp
+ *   v1.0
+ *
+ *   20200708
  *
  *   A class that deals with dates of the
  *   modern Western Gregorian calendar.

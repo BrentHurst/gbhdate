@@ -1,3 +1,23 @@
+/*************************************************
+ *   G BRENT HURST
+ *   gbhdate.cpp
+ *   v1.0
+ *
+ *   20200708
+ *
+ *   A class that deals with dates of the
+ *   modern Western Gregorian calendar.
+ *
+ *   This class currently doesn't support the
+ *   Julian calendar and actually assumes it was
+ *   never used. I might add support in the          TODO
+ *   future. As of now, this doesn't support
+ *   dates before January 1, AD 1 (Gregorian).       TODO
+ *
+ ************************************************/
+
+
+
 #include "gbhdate.hpp"
 #include <iostream>
 #include <string>
