@@ -34,6 +34,11 @@ class GBH_Date
 	string monthAbr;
 	int day;
 
+
+
+
+
+
 	int totalDay; //since an undefined epoch
 
 	void setYear(int y);

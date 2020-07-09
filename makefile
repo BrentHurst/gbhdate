@@ -1,8 +1,14 @@
 # G BRENT HURST
 # Makefile for gbhdate
 
+LIBDIR = lib
+OBJDIR = obj
+SRCDIR = src
+INCDIR = include
+
 CC = g++
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -I$(INCDIR)
+
 
 ########## EDIT BELOW HERE ##########
 
@@ -10,8 +16,8 @@ NAME = gbhdate
 
 ########## EDIT ABOVE HERE ##########
 
-LIB = lib$(NAME).a
-OBJECTS = $(NAME).o
+LIB = $(LIBDIR)/lib$(NAME).a
+OBJECTS = $(OBJDIR)/$(NAME).o
 
 
 all: $(LIB)
@@ -19,7 +25,7 @@ all: $(LIB)
 $(LIB): $(OBJECTS)
 	ar -vr $@ $(OBJECTS)
 
-%.o: %.cpp
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 .PHONY: clean
