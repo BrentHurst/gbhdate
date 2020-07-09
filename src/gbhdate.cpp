@@ -5,105 +5,133 @@
 
 using namespace std;
 
-#define isLeapYear y%4==0 && ((y%100 != 0) || (y%400 == 0))
-
-
-// TODO - Fix under this
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Constructors if the date is known.
-GBH_Date::GBH_Date(int y,int m,int d)
+bool IsLeapYear(int y)
 {
-	setDate(y, m, d);
+	// TODO - is this right?
+	return (y%4==0 && ((y%100 != 0) || (y%400 == 0)));
 }
-GBH_Date::GBH_Date(string date)
-{
-	setDate(date);
-}
-
-
-//Constructor if the date isn't known
-GBH_Date::GBH_Date()
-{
-	day=0;
-	month=0;
-	year=0;
-	totalDay=0;
-}
-
-int GBH_Date::getYear() const { return year; }
-int GBH_Date::getMonth() const { return month; }
-string GBH_Date::getMonthName() const { return monthName; }
-string GBH_Date::getMonthAbr() const { return monthAbr; }
-int GBH_Date::getDay() const { return day; }
-
-//Assumes a year before AD 10,000
-string GBH_Date::getDateStr() const
-{
-	char c[20];
-	string s;
-
-	sprintf(c,"%04d%02d%02d",year,month,day);
-
-	s = c;
-
-	return s;
-}
-
-unsigned int getDateInt() const
-{
-	return year * 10000 + month * 100 + day;
-}
-
-GBH_Date GBH_Date::operator+(const int days)
-{
-	this->setWithTotalDay(totalDay + days);
-	return *this;
-}
-GBH_Date GBH_Date::operator-(const int days) { return *this + (-1*days); }
-GBH_Date GBH_Date::operator++() { return *this + 1; }
-GBH_Date GBH_Date::operator--() { return *this - 1; }
-GBH_Date GBH_Date::operator+=(const int days) { return *this + days; }
-GBH_Date GBH_Date::operator-=(const int days) { return *this - days; }
-GBH_Date GBH_Date::operator=(const GBH_Date& d) { return d; }
-int GBH_Date::operator-(const GBH_Date& d){return this->totalDay - d.totalDay;}
-bool GBH_Date::operator<(const GBH_Date& d){return (this->totalDay < d.totalDay);}
-bool GBH_Date::operator>(const GBH_Date& d){return (this->totalDay > d.totalDay);}
-bool GBH_Date::operator<=(const GBH_Date& d){return (this->totalDay <= d.totalDay);}
-bool GBH_Date::operator>=(const GBH_Date& d){return (this->totalDay >= d.totalDay);}
-bool GBH_Date::operator==(const GBH_Date& d){return (this->totalDay == d.totalDay);}
-bool GBH_Date::operator!=(const GBH_Date& d){return (this->totalDay != d.totalDay);}
 
 
 //A basic print function that's
 //pretty much only useful for
 //error checking.
-void GBH_Date::print() const
+void GBH_Date::Print() const
 {
-	cout << "day:   " << day << endl
-		 << "       " << totalDay<< endl
-		 << "month: " << month << endl
-		 << "       " << monthName << endl
-		 << "       " << monthAbr << endl
-		 << "year:  " << year << endl;
+	cout << "day:   " << GetDay() << endl
+		 << "month: " << GetMonth() << endl
+		 << "       " << GetMonthName() << endl
+		 << "year:  " << GetYear() << endl
+		 << "date:  " << GetDate() << endl;
 }
 
+
+int GBH_Date::GetYear() const { return year; }
+int GBH_Date::GetMonth() const { return month; }
+int GBH_Date::GetDay() const { return day; }
+int GBH_Date::GetDate() const { return year * 10000 + month * 100 + day; }
+
+
+string GBH_Date::GetMonthName() const
+{
+	switch(month)
+	{
+		case 1:  return "January";   break;
+		case 2:  return "February";  break;
+		case 3:  return "March";     break;
+		case 4:  return "April";     break;
+		case 5:  return "May";       break;
+		case 6:  return "June";      break;
+		case 7:  return "July";      break;
+		case 8:  return "August";    break;
+		case 9:  return "September"; break;
+		case 10: return "October";   break;
+		case 11: return "November";  break;
+		case 12: return "December";  break;
+		default: return "";          break;
+	}
+}
+
+
+//Constructors
+GBH_Date::GBH_Date(int y,int m,int d)
+{
+	SetDate(y,m,d);
+}
+GBH_Date::GBH_Date(int i)
+{
+	SetDate(i);
+}
+GBH_Date::GBH_Date()
+{
+	ZeroOut();
+}
+
+bool GBH_Date::ZeroOut()
+{
+	year = 0;
+	month = 0;
+	day = 0;
+	return false;
+}
+
+bool GBH_Date::SetDate(int y, int m, int d)
+{
+	if(!SetDate_Protected(y, m, d))
+		return ZeroOut();
+	else
+		return true;
+}
+bool GBH_Date::SetDate(int i)
+{
+	if(!SetDate_Protected(i / 10000, (i / 100) % 100, i % 100))
+		return ZeroOut();
+	else
+		return true;
+}
+bool GBH_Date::SetDate_Protected(int y, int m, int d)
+{
+	int monthtype;
+
+	year = y;
+	month = m;
+	day = d;
+
+	if(month == 1
+			|| month == 3
+			|| month == 5
+			|| month == 7
+			|| month == 8
+			|| month == 10
+			|| month == 12
+	  )
+		monthtype = 1;
+	else if(month == 4
+			|| month == 6
+			|| month == 9
+			|| month == 11
+		   )
+		monthtype = 2;
+	else
+		monthtype = 3;
+
+	if(year < 0)
+		return false;
+	if(month < 1 || month > 12)
+		return false;
+	if(day < 1
+			|| day > 31
+			|| (monthtype == 2 && day > 30)
+			|| (monthtype == 3 && IsLeapYear(year) && day > 29)
+			|| (monthtype == 3 && !IsLeapYear(year) && day > 28)
+	  )
+		return false;
+
+	return true;
+}
+
+
 //Read in an integer
-int ReadInt(string s)
+static int ReadInt(string s)
 {
 	int i;
 	string junk;
@@ -124,7 +152,7 @@ int ReadInt(string s)
 //Fairly self-explanatory.
 void GBH_Date::ReadInDate()
 {
-	unsigned int ui;
+	int ui;
 	bool beenThroughOnce;
 	string junk;
 
@@ -138,8 +166,7 @@ void GBH_Date::ReadInDate()
 
 		beenThroughOnce=true;
 
-	}while(!setDate(y,m,d));
-
+	}while(!SetDate(ui));
 
 	//Literally the most important line of code in this method.
 	//If you delete this, you will have significant problems
@@ -147,188 +174,24 @@ void GBH_Date::ReadInDate()
 	getline(cin,junk);
 }
 
-//self-explanatory. day,month,year initialized to 0.
-void GBH_Date::setDay(int d)
+
+bool GBH_Date::operator<(const GBH_Date& d){return (this->GetDate() < d.GetDate());}
+bool GBH_Date::operator>(const GBH_Date& d){return (this->GetDate() > d.GetDate());}
+bool GBH_Date::operator<=(const GBH_Date& d){return (this->GetDate() <= d.GetDate());}
+bool GBH_Date::operator>=(const GBH_Date& d){return (this->GetDate() >= d.GetDate());}
+bool GBH_Date::operator==(const GBH_Date& d){return (this->GetDate() == d.GetDate());}
+bool GBH_Date::operator!=(const GBH_Date& d){return (this->GetDate() != d.GetDate());}
+
+
+/* GBH_Date GBH_Date::operator+(const int days)
 {
-	day=d;
-
-	if(day && month && year)
-		setTotalDay();
-}
-
-//self-explanatory. day,month,year initialized to 0.
-void GBH_Date::setMonth(int m)
-{
-	month=m;
-
-	switch(month)
-	{
-		case 1:  monthName="January";	monthAbr="Jan"; break;
-		case 2:  monthName="February";	monthAbr="Feb"; break;
-		case 3:  monthName="March";		monthAbr="Mar"; break;
-		case 4:  monthName="April";		monthAbr="Apr"; break;
-		case 5:  monthName="May";		monthAbr="May"; break;
-		case 6:  monthName="June";		monthAbr="Jun"; break;
-		case 7:  monthName="July";		monthAbr="Jul"; break;
-		case 8:  monthName="August";	monthAbr="Aug"; break;
-		case 9:  monthName="September"; monthAbr="Sep"; break;
-		case 10: monthName="October";	monthAbr="Oct"; break;
-		case 11: monthName="November";	monthAbr="Nov"; break;
-		case 12: monthName="December";	monthAbr="Dec"; break;
-	}
-
-	if(day && month && year)
-		setTotalDay();
-}
-
-//self-explanatory. day,month,year initialized to 0.
-void GBH_Date::setYear(int y)
-{
-	year=y;
-
-	if(day && month && year)
-		setTotalDay();
-}
-
-//annoying but self-explanatory.
-void GBH_Date::setTotalDay()
-{
-	int y=year; //must be y for the #define
-
-	totalDay=day;
-	if(month>1)
-		totalDay+=31;
-	if(month>2)
-	{
-		totalDay+=28;
-		if(isLeapYear)
-			totalDay++;
-	}
-	if(month>3)
-		totalDay+=31;
-	if(month>4)
-		totalDay+=30;
-	if(month>5)
-		totalDay+=31;
-	if(month>6)
-		totalDay+=30;
-	if(month>7)
-		totalDay+=31;
-	if(month>8)
-		totalDay+=31;
-	if(month>9)
-		totalDay+=30;
-	if(month>10)
-		totalDay+=31;
-	if(month>11)
-		totalDay+=30;
-
-	for(y=1; y<year; y++)
-	{
-		totalDay+=365;
-		if(isLeapYear)
-			totalDay++;
-	}
-}
-
-//Used in setWithTotalDay().
-//Advance the month if necessary.
-int nextMonth(int& td, int& m, int numDays)
-{
-	if(td>numDays)
-	{
-		td-=numDays;
-		m++;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-//given a totalDay, set the date.
-void GBH_Date::setWithTotalDay(int a)
-{
-	int i,y,m,d,td,numDays;
-
-	td = a;
-
-	//set year
-	for(y=1; ; y++) //must use y for #define
-	{
-		numDays = 365;
-		if(isLeapYear) numDays++;
-
-		if(td > numDays) td-=numDays;
-		else break;
-	}
-
-	//set month
-	m=1;
-	numDays=28;
-	if(isLeapYear) numDays++;
-	for(i=1; i<=12; i++)
-	{
-		//months with 31 days
-		if(i==1 || i==3 || i==5 || i==7 || i==8 || i==10 || i==12)
-		{
-			if(!nextMonth(td,m,31)) break;
-		}
-		//months with 30 days
-		else if(i==4 || i==6 || i==9 || i==11)
-		{
-			if(!nextMonth(td,m,30)) break;
-		}
-		//February
-		else
-		{
-			if(!nextMonth(td,m,numDays)) break;
-		}
-	}
-
-	//set day
-	d = td;
-
-	setDate(y,m,d);
-}
-//Returns false if passed an invalid date.
-//Returns true if passed a valid date.
-bool GBH_Date::setDate(int y, int m, int d)
-{
-	if(d<1 || m<1 || y<1 || d>31 || m>12 || y>9999)
-		return false;
-	else if((m==4 || m==6 || m==9 || m==11) && d>30)
-		return false;
-	else if((m==2 && d>29) || (m==2 && y%4 != 0 && d>28))
-		return false;
-
-	setDay(d);
-	setMonth(m);
-	setYear(y);
-
-	return true;
-}
-
-//Returns false if passed an invalid date.
-//Returns true if passed a valid date.
-bool GBH_Date::setDate(string date)
-{
-	int i;
-
-	sscanf(date.c_str(),"%d",&i);
-
-	return setDate(i / 10000, (i / 100) % 100, i % 100);
-}
-
-//Returns false if passed an invalid date.
-//Returns true if passed a valid date.
-bool GBH_Date::setDate(unsigned int date)
-{
-	return setDate(date / 10000, (date / 100) % 100, date % 100);
-}
-
-//Returns false if passed an invalid date.
-//Returns true if passed a valid date.
-bool GBH_Date::setDate(const GBH_Date& D)
-{
-	return this->setDate(D.getDate());
-}
+	this->setWithTotalDay(totalDay + days);
+	return *this;
+} */
+/* GBH_Date GBH_Date::operator-(const int days) { return *this + (-1*days); } */
+/* GBH_Date GBH_Date::operator++() { return *this + 1; } */
+/* GBH_Date GBH_Date::operator--() { return *this - 1; } */
+/* GBH_Date GBH_Date::operator+=(const int days) { return *this + days; } */
+/* GBH_Date GBH_Date::operator-=(const int days) { return *this - days; } */
+/* GBH_Date GBH_Date::operator=(const GBH_Date& d) { return d; } */
+/* int GBH_Date::operator-(const GBH_Date& d){return this->totalDay - d.totalDay;} */

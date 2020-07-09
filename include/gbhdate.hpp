@@ -13,9 +13,6 @@
  *   future. As of now, this doesn't support
  *   dates before January 1, AD 1 (Gregorian).       TODO
  *
- *   Method definitions in the file(s) indicated
- *   above each block of declarations.
- *
  ************************************************/
 
 #ifndef GBHDATE_H
@@ -30,35 +27,32 @@ class GBH_Date
   protected:
 	int year;
 	int month;
-	string monthName;
-	string monthAbr;
 	int day;
 
-
-
-
-
-
-	int totalDay; //since an undefined epoch
-
-	void setYear(int y);
-	void setMonth(int m);
-	void setDay(int d);
-	void setTotalDay();
+	bool SetDate_Protected(int y, int m, int d);
+	bool ZeroOut();
 
   public:
+	//pretty much just for error checking
+	void Print() const;
+
+	int GetYear() const;
+	int GetMonth() const;
+	int GetDay() const;
+
+	int GetDate() const;
+
+	string GetMonthName() const;
+
 	GBH_Date(int y,int m,int d);
-	GBH_Date(string date);
+	GBH_Date(int i);
 	GBH_Date();
 
-	GBH_Date operator+(const int days);
-	GBH_Date operator-(const int days);
-	GBH_Date operator++();
-	GBH_Date operator--();
-	GBH_Date operator+=(const int days);
-	GBH_Date operator-=(const int days);
-	GBH_Date operator=(const GBH_Date& d);
-	int operator-(const GBH_Date& d);
+	bool SetDate(int y, int m, int d);
+	bool SetDate(int i);
+
+	void ReadInDate();
+
 	bool operator<(const GBH_Date& d);
 	bool operator>(const GBH_Date& d);
 	bool operator<=(const GBH_Date& d);
@@ -66,27 +60,14 @@ class GBH_Date
 	bool operator==(const GBH_Date& d);
 	bool operator!=(const GBH_Date& d);
 
-	//pretty much just for error checking
-	void print() const;
-
-	void ReadInDate();
-
-	bool setDate(int y, int m, int d);
-	bool setDate(string date);
-	bool setDate(unsigned int date);
-	bool setDate(const GBH_Date& D);
-
-	int getYear() const;
-	int getMonth() const;
-	string getMonthName() const;
-	string getMonthAbr() const;
-	int getDay() const;
-	//format: "yyyymmdd"
-	string getDateStr() const;
-	unsigned int getDateInt() const;
-
-	int getTotalDay();
-	void setWithTotalDay(int i);
+	/* GBH_Date operator+(const int days); */
+	/* GBH_Date operator-(const int days); */
+	/* GBH_Date operator++(); */
+	/* GBH_Date operator--(); */
+	/* GBH_Date operator+=(const int days); */
+	/* GBH_Date operator-=(const int days); */
+	/* GBH_Date operator=(const GBH_Date& d); */
+	/* int operator-(const GBH_Date& d); */
 };
 
 #endif
